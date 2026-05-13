@@ -12,9 +12,15 @@ export default function Home() {
 
   async function entrar() {
     try {
-      await signInWithEmailAndPassword(auth, email, senha)
+      const userCredential = await signInWithEmailAndPassword(auth, email, senha)
+
+      // guardar sessão simples
+      localStorage.setItem("user", userCredential.user.email)
+
       alert("Login realizado com sucesso")
+
       router.push("/dashboard")
+
     } catch (erro) {
       alert("Email ou senha inválidos")
     }
