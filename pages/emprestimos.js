@@ -16,9 +16,16 @@ export default function Emprestimos() {
       return
     }
 
+    const juros = 10 // 10% fixo (podes mudar depois)
+    const valorNum = Number(valor)
+    const total = valorNum + (valorNum * juros / 100)
+
     await addDoc(emprestimosRef, {
       cliente,
-      valor: Number(valor),
+      valor: valorNum,
+      juros,
+      total,
+      status: "pendente",
       data: new Date().toISOString()
     })
 
@@ -47,7 +54,7 @@ export default function Emprestimos() {
       <h1>Empréstimos</h1>
 
       <input
-        placeholder="Nome do cliente"
+        placeholder="Cliente"
         value={cliente}
         onChange={(e) => setCliente(e.target.value)}
       />
@@ -72,8 +79,12 @@ export default function Emprestimos() {
       <h3>Lista de Empréstimos</h3>
 
       {lista.map((e) => (
-        <div key={e.id}>
-          {e.cliente} - {e.valor} MZN
+        <div key={e.id} style={{ marginBottom: 10 }}>
+          <b>{e.cliente}</b><br />
+          Valor: {e.valor} MZN<br />
+          Juros: {e.juros}%<br />
+          Total a pagar: {e.total} MZN<br />
+          Status: {e.status}
         </div>
       ))}
     </div>
